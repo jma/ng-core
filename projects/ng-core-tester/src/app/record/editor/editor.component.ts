@@ -35,7 +35,7 @@ export class EditorComponent {
   // JSONSchema
   schema = {};
 
-  // form intial values
+  // form initial values
   model = {};
 
   /** Constructor */

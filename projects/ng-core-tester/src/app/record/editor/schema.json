@@ -14,11 +14,11 @@
     "object",
     "object_of_object",
     "array",
+    "array_of_objects",
     "array_of_array",
     "array_of_object_of_object",
     "hidden_with_default",
     "readonly_changeable",
-    "simple_not_required",
     "hide_expression_cannot_be_added",
     "hidden_sub_property_hide_expr",
     "array_of_objects_with_sub_objects"
@@ -46,20 +46,22 @@
             "name": {
               "title": "Name",
               "type": "string",
+              "minLength": 3,
               "form": {
                 "templateOptions": {
-                  "cssClass": "col-lg-6"
+                  "itemCssClass": "col-lg-6"
                 }
               }
             },
             "hidden": {
               "title": "Hidden name",
               "type": "string",
+              "minLength": 3,
               "form": {
+                "templateOptions": {
+                  "itemCssClass": "col-lg-6"
+                },
                 "hide": true
-              },
-              "templateOptions": {
-                "cssClass": "col-lg-6"
               }
             },
             "type": {
@@ -69,46 +71,63 @@
               "default": "type1",
               "readOnly": true,
               "form": {
-                "templateOptions": {
-                  "cssClass": "col-lg-6"
-                }
+                "wrappers": ["hide"]
               }
             }
           },
           "form": {
             "templateOptions": {
-              "cssClass": "row"
+              "containerCssClass": "row"
             }
           }
         },
         {
           "title": "Property 2",
-          "required": [
-            "name"
-          ],
           "properties": {
             "name": {
               "title": "Name",
-              "type": "string"
+              "type": "string",
+              "minLength": 3,
+              "form": {
+                "templateOptions": {
+                  "itemCssClass": "col-lg-6"
+                }
+              }
             },
             "type": {
               "title": "Type",
               "type": "string",
               "const": "type2",
               "default": "type2",
-              "readOnly": true
+              "readOnly": true,
+              "form": {
+                "templateOptions": {
+                  "itemCssClass": "col-lg-6"
+                }
+              }
             },
             "bool": {
               "title": "boolean",
               "type": "boolean",
-              "default": true
+              "default": true,
+              "form": {
+                "templateOptions": {
+                  "itemCssClass": "col-lg-6"
+                }
+              }
+            }
+          },
+          "form": {
+            "templateOptions": {
+              "containerCssClass": "row"
             }
           }
         }
       ],
       "form": {
+        "wrappers": ["card"],
         "templateOptions": {
-          "cssClass": "editor-title"
+          "cssClass": "border border-info rounded p-2"
         }
       }
     },
@@ -117,7 +136,7 @@
       "description": "Not present in the form, not present in the model.",
       "type": "string",
       "default": "default",
-      "minLength": 1
+      "minLength": 3
     },
     "hidden": {
       "title": "Hidden",
@@ -132,15 +151,17 @@
       "description": "Hidden field with a default value.",
       "type": "string",
       "default": "default value",
-      "minLength": 1,
+      "minLength": 3,
       "form": {
-        "hide": true
+        "wrappers": [
+          "hide"
+        ]
       }
     },
     "essential": {
       "title": "Essential",
       "type": "string",
-      "minLength": 1,
+      "minLength": 3,
       "form": {
         "hide": true,
         "navigation": {
@@ -151,21 +172,30 @@
     "optional": {
       "title": "Optional",
       "type": "string",
-      "minLength": 1
+      "minLength": 3,
+      "form": {
+        "wrappers": [
+          "card"
+        ],
+        "templateOptions": {
+          "cssClass": "w-md-50"
+        }
+      }
     },
     "required": {
       "title": "Required",
       "type": "string",
       "minLength": 3,
       "form": {
-        "templateOptions": {
-          "cssClass": "editor-title editor-max-width"
-        }
+        "wrappers": [
+          "card"
+        ]
       }
     },
     "enum": {
       "title": "List of values",
       "type": "string",
+      "minLength": 3,
       "default": "val1",
       "enum": [
         "val1",
@@ -173,9 +203,9 @@
         "val3"
       ],
       "form": {
-        "templateOptions": {
-          "cssClass": "editor-title editor-max-width"
-        },
+        "wrappers": [
+          "card"
+        ],
         "options": [
           {
             "value": "Value 1",
@@ -206,16 +236,32 @@
       "properties": {
         "prop1": {
           "title": "Property 1",
-          "type": "string"
+          "type": "string",
+          "minLength": 3,
+          "form": {
+            "templateOptions": {
+              "itemCssClass": "col-md-6"
+            }
+          }
         },
         "prop2": {
           "title": "Property 2",
-          "type": "string"
+          "type": "string",
+          "minLength": 3,
+          "form": {
+            "templateOptions": {
+              "itemCssClass": "col-md-6"
+            }
+          }
         }
       },
       "form": {
+        "wrappers": [
+          "card"
+        ],
         "templateOptions": {
-          "cssClass": "editor-title"
+          "containerCssClass": "row",
+          "hideLabel": true
         }
       }
     },
@@ -242,27 +288,53 @@
           "properties": {
             "prop1": {
               "title": "Property 1",
-              "type": "string"
+              "type": "string",
+              "minLength": 3
             },
             "prop2": {
               "title": "Property 2",
-              "type": "string"
+              "type": "string",
+              "minLength": 3
             }
           }
         },
         "prop3": {
           "title": "Property 3",
-          "type": "string"
+          "type": "string",
+          "minLength": 3
         }
       },
       "form": {
-        "templateOptions": {
-          "cssClass": "editor-title"
-        }
+        "wrappers": [
+          "card"
+        ]
       }
     },
     "array": {
       "title": "Array",
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "title": "Values",
+        "type": "string",
+        "minLength": 3,
+        "form": {
+          "templateOptions": {
+            "itemCssClass": "col-lg-6"
+          }
+        }
+      },
+      "form": {
+        "wrappers": [
+          "card"
+        ],
+        "templateOptions": {
+          "containerCssClass": "row"
+        }
+      }
+    },
+    "array_of_objects": {
+      "title": "Array of Objects",
       "type": "array",
       "minItems": 1,
       "items": {
@@ -280,33 +352,35 @@
           "prop1": {
             "title": "Property 1",
             "type": "string",
+            "minLength": 3,
             "form": {
               "templateOptions": {
-                "cssClass": "col"
+                "itemCssClass": "col-6"
               }
             }
           },
           "prop2": {
             "title": "Property 2",
             "type": "string",
+            "minLength": 3,
             "form": {
               "hide": true,
               "templateOptions": {
-                "cssClass": "col-lg-6"
+                "itemCssClass": "col-6"
               }
             }
           }
         },
         "form": {
           "templateOptions": {
-            "cssClass": "row"
+            "containerCssClass": "row"
           }
         }
       },
       "form": {
-        "templateOptions": {
-          "cssClass": "editor-title"
-        }
+        "wrappers": [
+          "card"
+        ]
       }
     },
     "array_of_array": {
@@ -329,18 +403,13 @@
         "items": {
           "title": "Values",
           "type": "string",
-          "minLength": 1
-        },
-        "form": {
-          "templateOptions": {
-            "cssClass": "row"
-          }
+          "minLength": 3
         }
       },
       "form": {
-        "templateOptions": {
-          "cssClass": "editor-title"
-        },
+        "wrappers": [
+          "card"
+        ],
         "navigation": {
           "essential": true
         }
@@ -373,29 +442,27 @@
             "properties": {
               "prop1": {
                 "title": "Property 1",
-                "type": "string"
+                "type": "string",
+                "minLength": 3
               },
               "prop2": {
                 "title": "Property 2",
-                "type": "string"
+                "type": "string",
+                "minLength": 3
               }
             }
           },
           "prop3": {
             "title": "Property 3",
-            "type": "string"
-          }
-        },
-        "form": {
-          "templateOptions": {
-            "cssClass": "row"
+            "type": "string",
+            "minLength": 3
           }
         }
       },
       "form": {
-        "templateOptions": {
-          "cssClass": "editor-title"
-        }
+        "wrappers": [
+          "card"
+        ]
       }
     },
     "hidden_with_default": {
@@ -407,12 +474,11 @@
         "Value 1"
       ],
       "form": {
-        "hide": true,
+        "wrappers": [
+          "hide"
+        ],
         "navigation": {
           "essential": true
-        },
-        "templateOptions": {
-          "cssClass": "editor-title"
         }
       }
     },
@@ -427,40 +493,25 @@
         "Value 2"
       ],
       "form": {
-        "templateOptions": {
-          "cssClass": "editor-title"
-        }
-      }
-    },
-    "simple_not_required": {
-      "title": "[issue] Simple element of list are not required.",
-      "description": "Simple element must not pass the validation if they are required and empty.",
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "title": "Item",
-        "type": "string",
-        "pattern": "^.+$",
-        "minLength": 1
-      },
-      "form": {
-        "templateOptions": {
-          "cssClass": "editor-title"
-        }
+        "wrappers": [
+          "card"
+        ]
       }
     },
     "hide_expression_cannot_be_added": {
       "title": "[issue] Property with hide expression.",
       "description": "Property with hide expression cannot be added.",
       "type": "string",
-      "minLength": 1,
+      "minLength": 3,
       "form": {
         "hideExpression": "true",
         "navigation": {
           "essential": true
         },
         "templateOptions": {
-          "cssClass": "editor-title"
+          "wrappers": [
+            "card"
+          ]
         }
       }
     },
@@ -469,6 +520,9 @@
       "description": "Hidden sub-property with hide expression can be added to the form.",
       "type": "object",
       "additionalProperties": false,
+      "required": [
+        "statement"
+      ],
       "properties": {
         "statement": {
           "title": "Statements",
@@ -477,20 +531,26 @@
           "items": {
             "title": "Statement",
             "type": "string",
-            "minLength": 1
-          },
+            "minLength": 3
+          }
+        },
+        "prop": {
+          "title": "Hidden Property",
+          "type": "string",
+          "minLength": 3,
           "form": {
-            "hideExpresssion": "true"
+            "hide": true
           }
         }
       },
       "propertiesOrder": [
-        "statement"
+        "statement",
+        "prop"
       ],
       "form": {
-        "templateOptions": {
-          "cssClass": "editor-title"
-        }
+        "wrappers": [
+          "card"
+        ]
       }
     },
     "array_of_objects_with_sub_objects": {
@@ -511,7 +571,7 @@
               "subprop1": {
                 "title": "Sub property 1",
                 "type": "string",
-                "minLength": 1
+                "minLength": 3
               }
             },
             "required": [
@@ -521,7 +581,7 @@
           "prop2": {
             "title": "Property 2",
             "type": "string",
-            "minLength": 1
+            "minLength": 3
           }
         },
         "required": [
@@ -530,9 +590,9 @@
         ]
       },
       "form": {
-        "templateOptions": {
-          "cssClass": "editor-title"
-        }
+        "wrappers": [
+          "card"
+        ]
       }
     }
   }

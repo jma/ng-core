@@ -20,6 +20,7 @@ import {
   ActionStatus,
   DetailComponent as RecordDetailComponent,
   EditorComponent, JSONSchema7, RecordSearchComponent,
+  RecordSearchPageComponent,
   RouteInterface
 } from '@rero/ng-core';
 import { Observable, of } from 'rxjs';
@@ -42,7 +43,7 @@ export class DocumentsRoute implements RouteInterface {
     return {
       path: 'record/search',
       children: [
-        { path: ':type', component: RecordSearchComponent },
+        { path: ':type', component: RecordSearchPageComponent },
         { path: ':type/new', component: EditorComponent },
         { path: ':type/edit/:pid', component: EditorComponent },
         { path: ':type/detail/:pid', component: RecordDetailComponent }

@@ -30,6 +30,7 @@
     </li>
   </ul>
   <div class="main-content">
+    {{types}}
     <h5 *ngIf="types.length == 1 && showLabel">
       {{ types[0].label | translate }}
     </h5>

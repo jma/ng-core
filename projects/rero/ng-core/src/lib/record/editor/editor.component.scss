@@ -17,6 +17,18 @@
 @import "node_modules/bootstrap/scss/functions";
 @import "node_modules/bootstrap/scss/mixins";
 @import "node_modules/bootstrap/scss/variables";
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    @each $prop, $abbrev in (width: w, height: h) {
+      @each $size, $length in $sizes {
+        .#{$abbrev}#{$infix}-#{$size} { #{$prop}: $length !important; }
+      }
+    }
+  }
+}
+
 .editor {
 
   > .header {
@@ -176,8 +188,7 @@
     color: rgba(0, 0, 0, 0.85);
     background-color: transparent;
   }
-  .content,
-  .header {
+  .content {
     margin-left: map-get($spacers, 3);
   }
 
@@ -221,12 +232,7 @@
   }
 
   .header:hover ~ .content {
-    background-color: $gray-100;
+    background-color: $gray-200;
   }
 
-  .editor-max-width > div {
-    @include media-breakpoint-up(lg) {
-      max-width: 500px;
-    }
-  }
 }

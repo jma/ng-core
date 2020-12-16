@@ -46,6 +46,10 @@ export class ArrayTypeComponent extends FieldArrayType implements OnInit {
   ngOnInit() {
     this.isChildrenObject = this.field.fieldArray.type === 'object';
     this.isChildrenArray = this.field.fieldArray.type === 'array';
+    this.field.templateOptions.remove = this.remove.bind(this);
+    this.field.templateOptions.add = this.add.bind(this);
+    this.field.templateOptions.canAdd = this.canAdd.bind(this);
+    this.field.templateOptions.canRemove = this.canRemove.bind(this);
   }
 
   /**
@@ -77,7 +81,6 @@ export class ArrayTypeComponent extends FieldArrayType implements OnInit {
    * @param i - number, the position to remove the element
    */
   remove(i: number) {
-
     super.remove(i);
   }
 
@@ -86,7 +89,6 @@ export class ArrayTypeComponent extends FieldArrayType implements OnInit {
    * @param i - number, the position to add the element
    */
   add(i: number, initialModel?: any) {
-    // TODO: focus in the first input child
     super.add(i, initialModel);
     this.setFocusInChildren(this.field.fieldGroup[i]);
   }
@@ -112,12 +114,12 @@ export class ArrayTypeComponent extends FieldArrayType implements OnInit {
     return false;
   }
 
-  /**
-   * Hide the array and remove all the elements
-   */
-  hide() {
-    this.field.hide = true;
-  }
+  // /**
+  //  * Hide the array and remove all the elements
+  //  */
+  // hide() {
+  //   this.field.hide = true;
+  // }
 
   /**
    * Is the dropdown menu displayed?

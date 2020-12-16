@@ -34,8 +34,8 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { DetailComponent } from './detail/detail.component';
 import { RecordDetailDirective } from './detail/detail.directive';
 import { JsonComponent as DetailJsonComponent } from './detail/view/json.component';
-import { AddFieldEditorComponent } from './editor/add-field-editor/add-field-editor.component';
-import { DropdownLabelEditorComponent } from './editor/dropdown-label-editor/dropdown-label-editor.component';
+import { AddFieldEditorComponent } from './editor/widgets/add-field-editor/add-field-editor.component';
+import { DropdownLabelEditorComponent } from './editor/widgets/dropdown-label-editor/dropdown-label-editor.component';
 import { EditorComponent } from './editor/editor.component';
 import { fieldIdGenerator, hooksFormlyExtension, registerTranslateExtension } from './editor/extensions';
 import { ArrayTypeComponent } from './editor/type/array-type/array-type.component';
@@ -60,6 +60,8 @@ import { RecordSearchComponent } from './search/record-search.component';
 import { JsonComponent } from './search/result/item/json.component';
 import { RecordSearchResultComponent } from './search/result/record-search-result.component';
 import { RecordSearchResultDirective } from './search/result/record-search-result.directive';
+import { CardWrapperComponent } from './editor/wrappers/card-wrapper/card-wrapper.component';
+import { LabelComponent } from './editor/widgets/label/label.component';
 
 @NgModule({
   declarations: [
@@ -91,7 +93,9 @@ import { RecordSearchResultDirective } from './search/result/record-search-resul
     RemoteTypeaheadComponent,
     RecordFilesComponent,
     LoadTemplateFormComponent,
-    SaveTemplateFormComponent
+    SaveTemplateFormComponent,
+    CardWrapperComponent,
+    LabelComponent
   ],
   imports: [
     // NOTE : BrowserAnimationModule **should** be include in application core module.
@@ -148,7 +152,8 @@ import { RecordSearchResultDirective } from './search/result/record-search-resul
       wrappers: [
         { name: 'toggle-switch', component: ToggleWrapperComponent },
         { name: 'form-field-horizontal', component: HorizontalWrapperComponent },
-        { name: 'hide', component: HideWrapperComponent }
+        { name: 'hide', component: HideWrapperComponent },
+        { name: 'card', component: CardWrapperComponent }
       ]
     }),
     FormlyBootstrapModule,

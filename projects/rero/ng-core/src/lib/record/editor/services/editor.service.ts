@@ -83,7 +83,7 @@ export class EditorService {
    * @param field - FormlyFieldConfig, form config to be added
    */
   addHiddenField(field: FormlyFieldConfig) {
-    if (!this._hiddenFields.some(f => f.id === field.id) && this.isFieldRoot(field)) {
+    if (!this._hiddenFields.some(f => f.id === field.id) && this.isRoot(field.parent)) {
       this._hiddenFields.push(field);
       this._hiddenFieldsSubject.next(this._hiddenFields);
     }
@@ -94,9 +94,43 @@ export class EditorService {
    * @param field - FormlyFieldConfig, form config to be removed
    */
   removeHiddenField(field: FormlyFieldConfig) {
-    if (this._hiddenFields.some(f => f === field) && this.isFieldRoot(field)) {
+    if (this._hiddenFields.some(f => f === field) && this.isRoot(field.parent)) {
       this._hiddenFields = this._hiddenFields.filter(f => f.id !== field.id);
       this._hiddenFieldsSubject.next(this._hiddenFields);
+    }
+  }
+
+  /**
+   * Is the field can be hidden?
+   * @param field - FormlyFieldConfig, the field to hide
+   * @returns boolean, true if the field can be hidden
+   */
+  canHide(field: FormlyFieldConfig) {
+    if (!field.templateOptions.longMode) {
+      return false;
+    }
+    return (
+      !field.templateOptions.required &&
+      !field.hide &&
+      field.hideExpression == null
+    );
+  }
+
+  /**
+   * Am I at the root of the form?
+   * @returns boolean, true if I'm the root
+   */
+  isRoot(field: FormlyFieldConfig) {
+    if (!field.parent) {
+      return false;
+    }
+    return field.parent.parent === undefined;
+  }
+
+  hide(field: FormlyFieldConfig) {
+    field.hide = true;
+    if (this.isRoot(field.parent)) {
+      this.addHiddenField(field);
     }
   }
 }
