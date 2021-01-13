@@ -4,24 +4,7 @@
   "title": "Test editor",
   "additionalProperties": false,
   "propertiesOrder": [
-    "oneOf",
-    "optional",
-    "required",
-    "essential",
-    "hidden",
-    "defaultHidden",
-    "object",
-    "object_of_object",
-    "array",
-    "array_of_objects",
-    "array_of_array",
-    "array_of_object_of_object",
-    "hidden_with_default",
-    "readonly_changeable",
-    "enum",
-    "hide_expression_cannot_be_added",
-    "hidden_sub_property_hide_expr",
-    "array_of_objects_with_sub_objects"
+    "oneOf"
   ],
   "properties": {
     "oneOf": {

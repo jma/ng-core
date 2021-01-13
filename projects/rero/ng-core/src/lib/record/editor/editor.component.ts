@@ -157,7 +157,6 @@ export class EditorComponent implements OnInit, OnChanges, OnDestroy {
     private _modalService: BsModalService,
     private _routeCollectionService: RouteCollectionService
   ) {
-    this.form = new FormGroup({});
   }
 
   /**
@@ -166,23 +165,61 @@ export class EditorComponent implements OnInit, OnChanges, OnDestroy {
    * @param changes: the changed properties
    */
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.model && !changes.model.isFirstChange()) { // Model has changed
-      this._setModel(changes.model.currentValue);
-      // needed to select the right value for existing data in the multi select
-      // components such as oneOf
-      if (this.schema) {
-        this.setSchema(this.schema);
-      }
-    }
-    if (changes.schema && changes.schema.isFirstChange()) { // Schema has changed
-      this.setSchema(changes.schema.currentValue);
-    }
+    // if (changes.model && !changes.model.isFirstChange()) { // Model has changed
+    //   this._setModel(changes.model.currentValue);
+    //   // needed to select the right value for existing data in the multi select
+    //   // components such as oneOf
+    //   if (this.schema) {
+    //     this.setSchema(this.schema);
+    //   }
+    // }
+    // if (changes.schema && changes.schema.isFirstChange()) { // Schema has changed
+    //   this.setSchema(changes.schema.currentValue);
+    // }
   }
 
   /**
    * Component initialisation
    */
   ngOnInit() {
+    this.form = new FormGroup({});
+    this.options = {};
+    const schema = {
+      type: "object",
+      title: "Test editor",
+      additionalProperties: false,
+      properties: {
+        oneOf: {
+          title: "oneOf",
+          type: "object",
+          additionnalProperties: "false",
+          oneOf: [
+            {
+              title: "Property 1",
+              required: [
+                "name"
+              ],
+              properties: {
+                name: {
+                  title: "Name",
+                  type: "string",
+                  minLength: 3
+                },
+                type: {
+                  title: "Type",
+                  type: "string"
+                }
+              }
+            }
+          ]
+        }
+      }
+    };
+    this.fields = [
+      this._formlyJsonschema.toFieldConfig(schema as object, {map: (field, schema) => {console.log(field); return field;}})
+    ];
+    this.model = {};
+    return;
     this._subscribers.push(
       this._editorService.hiddenFields$.subscribe(() =>
         this.getTocFields()
@@ -394,19 +431,19 @@ export class EditorComponent implements OnInit, OnChanges, OnDestroy {
    * @param schema - object, JOSNSchemag
    */
   setSchema(schema: any) {
-    console.log(schema);
+
     // reorder all object properties
     this.schema = orderedJsonSchema(schema);
-    this.options = {};
     // remove hidden field list in case of a previous setSchema call
-    this._editorService.clearHiddenFields();
+    // this._editorService.clearHiddenFields();
 
     // form configuration
-    const fields = [
+    this.fields = [
       this._formlyJsonschema.toFieldConfig(this.schema, {
         // post process JSONSChema7 to FormlyFieldConfig conversion
-        map: (field: FormlyFieldConfig, jsonSchema: JSONSchema7) => {
-          console.log(field, field.templateOptions.label);
+        map: (field: FormlyFieldConfig, jsonSchema: any) => {
+          console.log(this, field, field.templateOptions.label);
+          return field;
           /**** additionnal JSONSchema configurations *******/
           // initial population of arrays with a minItems constraints
           if (jsonSchema.minItems && !jsonSchema.hasOwnProperty('default')) {
@@ -456,7 +493,8 @@ export class EditorComponent implements OnInit, OnChanges, OnDestroy {
         }
       })
     ];
-    this.fields = fields;
+    // this.fields = fields;
+    console.log('loaded');
     // set root element
     if (this.fields) {
       this.rootFomlyConfig = this.fields[0];
