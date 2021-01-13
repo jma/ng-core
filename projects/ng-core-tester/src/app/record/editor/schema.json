@@ -10,7 +10,6 @@
     "essential",
     "hidden",
     "defaultHidden",
-    "enum",
     "object",
     "object_of_object",
     "array",
@@ -19,12 +18,10 @@
     "array_of_object_of_object",
     "hidden_with_default",
     "readonly_changeable",
+    "enum",
     "hide_expression_cannot_be_added",
     "hidden_sub_property_hide_expr",
     "array_of_objects_with_sub_objects"
-  ],
-  "required": [
-    "required"
   ],
   "properties": {
     "oneOf": {
@@ -37,7 +34,7 @@
           "propertiesOrder": [
             "name",
             "type",
-            "hidden"
+            "hidden_prop"
           ],
           "required": [
             "name"
@@ -53,7 +50,7 @@
                 }
               }
             },
-            "hidden": {
+            "hidden_prop": {
               "title": "Hidden name",
               "type": "string",
               "minLength": 3,
@@ -71,7 +68,9 @@
               "default": "type1",
               "readOnly": true,
               "form": {
-                "wrappers": ["hide"]
+                "wrappers": [
+                  "hide"
+                ]
               }
             }
           },
@@ -125,7 +124,9 @@
         }
       ],
       "form": {
-        "wrappers": ["card"],
+        "wrappers": [
+          "card"
+        ],
         "templateOptions": {
           "cssClass": "border border-info rounded p-2"
         }
@@ -141,9 +142,13 @@
     "hidden": {
       "title": "Hidden",
       "type": "string",
+      "default": "hidden",
       "minLength": 1,
       "form": {
-        "hide": true
+        "hide": true,
+        "wrappers": [
+          "card"
+        ]
       }
     },
     "defaultHidden": {
@@ -504,15 +509,13 @@
       "type": "string",
       "minLength": 3,
       "form": {
-        "hideExpression": "true",
-        "navigation": {
-          "essential": true
+        "hideExpression": "field.parent.model.enum === 'val1'",
+        "expressionProperties": {
+          "templateOptions.required": "field.parent.model.enum === 'val2'"
         },
-        "templateOptions": {
-          "wrappers": [
-            "card"
-          ]
-        }
+        "wrappers": [
+          "card"
+        ]
       }
     },
     "hidden_sub_property_hide_expr": {

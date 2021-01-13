@@ -32,6 +32,10 @@ export class EditorComponent {
     }
   };
 
+  // TODO:
+  // isRoot and hide
+  // hide as expression
+
   // JSONSchema
   schema = {};
 

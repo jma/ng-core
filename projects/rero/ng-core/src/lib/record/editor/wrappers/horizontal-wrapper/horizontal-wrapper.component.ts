@@ -49,6 +49,11 @@ export class HorizontalWrapperComponent extends FieldWrapper {
     super();
   }
 
+  /** Get the current field index position in the parent array.
+   *
+   * @returns number - the index position in the parent array, null if the parent
+   *                   is not an array.
+   */
   getIndex() {
     if (this.field.parent.type === 'array') {
       return Number(this.field.key);
@@ -65,7 +70,6 @@ export class HorizontalWrapperComponent extends FieldWrapper {
       return this._editorService.hide(this.field);
     }
     if (this.field.parent.type === 'array') {
-
       return this.field.parent.templateOptions.remove(this.getIndex());
     }
   }
@@ -101,7 +105,6 @@ export class HorizontalWrapperComponent extends FieldWrapper {
   add() {
     if (this.field.parent.type === 'array') {
       const i = this.getIndex() + 1;
-      console.log('i:', i);
       return this.field.parent.templateOptions.add(this.getIndex() + 1);
     }
   }

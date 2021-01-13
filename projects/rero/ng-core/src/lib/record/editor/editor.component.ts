@@ -394,6 +394,7 @@ export class EditorComponent implements OnInit, OnChanges, OnDestroy {
    * @param schema - object, JOSNSchemag
    */
   setSchema(schema: any) {
+    console.log(schema);
     // reorder all object properties
     this.schema = orderedJsonSchema(schema);
     this.options = {};
@@ -405,6 +406,7 @@ export class EditorComponent implements OnInit, OnChanges, OnDestroy {
       this._formlyJsonschema.toFieldConfig(this.schema, {
         // post process JSONSChema7 to FormlyFieldConfig conversion
         map: (field: FormlyFieldConfig, jsonSchema: JSONSchema7) => {
+          console.log(field, field.templateOptions.label);
           /**** additionnal JSONSchema configurations *******/
           // initial population of arrays with a minItems constraints
           if (jsonSchema.minItems && !jsonSchema.hasOwnProperty('default')) {
@@ -449,6 +451,7 @@ export class EditorComponent implements OnInit, OnChanges, OnDestroy {
             return this._resourceConfig.formFieldMap(field, jsonSchema);
           }
 
+          console.log(field, field.templateOptions.label);
           return field;
         }
       })

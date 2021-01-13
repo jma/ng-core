@@ -52,6 +52,12 @@ export class LabelComponent {
         this.field.templateOptions.helpURL) && this.field.templateOptions.longMode
     );
   }
+
+  /** Get the current field index position in the parent array.
+   *
+   * @returns number - the index position in the parent array, null if the parent
+   *                   is not an array.
+   */
   getIndex() {
     if (this.field.parent.type === 'array') {
       return Number(this.field.key);
@@ -59,6 +65,14 @@ export class LabelComponent {
     return null;
   }
 
+  /** Get the list of children fields of a given field.
+   *
+   * This is more complicated for multischema, the formlyField should be extracted
+   * from the children of children.
+   *
+   * @param field FormlyFieldConfig - the field to get the fieldGroup.
+   * @returns Array of FormlyFieldConfig - the list of the children fields.
+   */
   getFieldGroup(field: FormlyFieldConfig) {
     let fieldGroup = [];
     // multischema has a nested structure object['enum', 'object'], enum is the oneOf select
@@ -138,6 +152,7 @@ export class LabelComponent {
     }
     return false;
   }
+
   /**
    * Is the field can be hidden?
    * @returns boolean, true if the field can be hidden
@@ -148,6 +163,7 @@ export class LabelComponent {
     }
     return false;
   }
+
   /**
    * Add a new element
    * @param field - FormlyFieldConfig, the field to hide
@@ -159,5 +175,4 @@ export class LabelComponent {
       return this.field.parent.templateOptions.add(this.getIndex() + 1);
     }
   }
-
 }

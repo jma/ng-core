@@ -83,6 +83,7 @@ export class EditorService {
    * @param field - FormlyFieldConfig, form config to be added
    */
   addHiddenField(field: FormlyFieldConfig) {
+    console.log(field, field.parent, this.isRoot(field.parent));
     if (!this._hiddenFields.some(f => f.id === field.id) && this.isRoot(field.parent)) {
       this._hiddenFields.push(field);
       this._hiddenFieldsSubject.next(this._hiddenFields);
@@ -101,7 +102,7 @@ export class EditorService {
   }
 
   /**
-   * Is the field can be hidden?
+   * Can the field be hidden?
    * @param field - FormlyFieldConfig, the field to hide
    * @returns boolean, true if the field can be hidden
    */
@@ -118,6 +119,7 @@ export class EditorService {
 
   /**
    * Am I at the root of the form?
+   * @param field - FormlyFieldConfig, the field to hide
    * @returns boolean, true if I'm the root
    */
   isRoot(field: FormlyFieldConfig) {
@@ -127,6 +129,10 @@ export class EditorService {
     return field.parent.parent === undefined;
   }
 
+  /**
+   * Hide the given formly field.
+   * @param field - FormlyFieldConfig, the field to hide
+   */
   hide(field: FormlyFieldConfig) {
     field.hide = true;
     if (this.isRoot(field.parent)) {
