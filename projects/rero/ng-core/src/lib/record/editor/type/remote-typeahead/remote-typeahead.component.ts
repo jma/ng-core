@@ -1,6 +1,6 @@
 /*
  * RERO angular core
- * Copyright (C) 2020 RERO
+ * Copyright (C) 2020-2023 RERO
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -42,6 +42,11 @@ export class RemoteTypeaheadComponent extends FieldType implements OnInit {
   /** Template representation of the formControl value. */
   valueAsHTML$: Observable<string>;
 
+  /** Filters options */
+  get filters(): remoteTypeaheadFilters | null {
+    return this.field.templateOptions.remoteTypeahead?.filters;
+  };
+
   /** Number of result in suggestions list */
   private _numberOfSuggestions = 10;
 
@@ -61,7 +66,6 @@ export class RemoteTypeaheadComponent extends FieldType implements OnInit {
 
   /** Init */
   ngOnInit() {
-
     // get the list of suggestions based on input search changes
     this.suggestions$ = new Observable((observer: Observer<string>) => {
       observer.next(this.search);
@@ -117,8 +121,16 @@ export class RemoteTypeaheadComponent extends FieldType implements OnInit {
   }
 
   /**
-   * Clear current value
+   * Detection of change on the filter menu,
+   * Value assignment and reset value on the search field.
+   * @param filter - selected filter on select menu
    */
+  changeFilter(filter: string): void {
+    this.filters.selected = filter;
+    this.search = null;
+  }
+
+  /** Clear current value */
   clear(): void {
     this.search = null;
     this.formControl.reset();
@@ -132,4 +144,15 @@ export interface SuggestionMetadata {
   value: string;
   externalLink?: string;
   group?: string;
+}
+
+/** Filters Interface */
+export interface remoteTypeaheadFilters {
+  itemCssClass?: string,
+  default: string;
+  selected: string;
+  options: {
+    label: string;
+    value: string;
+  }[]
 }
