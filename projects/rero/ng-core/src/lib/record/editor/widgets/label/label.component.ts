@@ -22,10 +22,9 @@ import { EditorComponent } from '../../editor.component';
 
 @Component({
   selector: 'ng-core-label-editor',
-  templateUrl: './label.component.html'
+  templateUrl: './label.component.html',
 })
 export class LabelComponent implements OnInit {
-
   // Current field
   @Input() field: FormlyFieldConfig;
 
@@ -36,14 +35,12 @@ export class LabelComponent implements OnInit {
    * Constructor
    * @param _translateService - TranslateService, that translate the labels of the hidden fields
    */
-  constructor(
-    private _translateService: TranslateService
-  ) { }
+  constructor(private _translateService: TranslateService) {}
 
   /** onInit hook */
   ngOnInit(): void {
     if (this.field.templateOptions.editorComponent) {
-      this.editorComponentInstance = (this.field.templateOptions.editorComponent)();
+      this.editorComponentInstance = this.field.templateOptions.editorComponent();
     }
   }
 
@@ -60,8 +57,8 @@ export class LabelComponent implements OnInit {
       return false;
     }
     return (
-      (this.hiddenFieldGroup(this.getFieldGroup(this.field)).length > 0 ||
-        this.field.templateOptions.helpURL) && this.editorComponentInstance?.longMode
+      (this.hiddenFieldGroup(this.getFieldGroup(this.field)).length > 0 || this.field.templateOptions.helpURL) &&
+      this.editorComponentInstance?.longMode
     );
   }
 
@@ -71,8 +68,9 @@ export class LabelComponent implements OnInit {
    *                   is not an array.
    */
   getIndex() {
-    if (this.field.parent.type === 'array') {
-      return Number(this.field.key);
+    const parent = this._getParentField(this.field);
+    if (parent.type === 'array') {
+      return Number(this._getParentKey(this.field));
     }
     return null;
   }
@@ -95,8 +93,8 @@ export class LabelComponent implements OnInit {
       const multischemaEntries = multischemaFieldGroup.fieldGroup[1];
       let activeGroups = multischemaEntries.fieldGroup;
       // only the active
-      activeGroups = activeGroups.filter(f => f.hide === false);
-      activeGroups.map(group => fieldGroup = [...group.fieldGroup, group]);
+      activeGroups = activeGroups.filter((f) => f.hide === false);
+      activeGroups.map((group) => (fieldGroup = [...group.fieldGroup, group]));
     } else {
       fieldGroup = field.fieldGroup;
     }
@@ -109,7 +107,7 @@ export class LabelComponent implements OnInit {
    * @returns FormlyFieldConfig[], the filtered list
    */
   hiddenFieldGroup(fieldGroup: FormlyFieldConfig[]): FormlyFieldConfig[] {
-    return fieldGroup.filter(f => f.hide && f.hideExpression == null);
+    return fieldGroup.filter((f) => f.hide && f.hideExpression == null);
   }
 
   /**
@@ -134,13 +132,14 @@ export class LabelComponent implements OnInit {
    * @param field - FormlyFieldConfig, the field to hide
    */
   remove(): void {
-    if (this.field.parent.type === 'object') {
+    const parent = this._getParentField(this.field);
+    if (parent.type === 'object') {
       if (this.editorComponentInstance) {
         this.editorComponentInstance.hide(this.field);
       }
     }
-    if (this.field.parent.type === 'array') {
-      this.field.parent.templateOptions.remove(this.getIndex());
+    if (parent.type === 'array') {
+      parent.templateOptions.remove(this.getIndex());
     }
   }
 
@@ -157,11 +156,12 @@ export class LabelComponent implements OnInit {
    * @returns boolean, true if the field can be hidden
    */
   canRemove(): boolean {
-    if (this.field.parent.type === 'object') {
+    const parent = this._getParentField(this.field);
+    if (parent.type === 'object') {
       return this.editorComponentInstance ? this.editorComponentInstance.canHide(this.field) : false;
     }
-    if (this.field.parent.type === 'array') {
-      return this.field.parent.templateOptions.canRemove();
+    if (parent.type === 'array') {
+      return parent.templateOptions.canRemove();
     }
     return false;
   }
@@ -194,8 +194,9 @@ export class LabelComponent implements OnInit {
    * @returns boolean, true if the field can be hidden
    */
   canAdd() {
-    if (this.field.parent.type === 'array') {
-      return this.field.parent.templateOptions.canAdd();
+    const parent = this._getParentField(this.field);
+    if (parent && parent?.type === 'array') {
+      return parent.templateOptions.canAdd();
     }
     return false;
   }
@@ -205,9 +206,38 @@ export class LabelComponent implements OnInit {
    * @param field - FormlyFieldConfig, the field to hide
    */
   add() {
-    if (this.field.parent.type === 'array') {
+    const parent = this._getParentField(this.field);
+    if (parent.type === 'array') {
       const index = this.getIndex() + 1;
-      return this.field.parent.templateOptions.add(index);
+      return parent.templateOptions.add(index);
     }
+  }
+
+  /**
+   * Get the first parent field that is different that the ignored type.
+   * @returns a formly field.
+   */
+  private _getParentField(field: FormlyFieldConfig, ignore = ['multischema', 'formly-group']) {
+    if (!field.parent) {
+      return null;
+    }
+    if (field?.parent?.type && !ignore.includes(field.parent.type)) {
+      return field.parent;
+    }
+    return this._getParentField(field.parent, ignore);
+  }
+
+  /** Get the first existing key in parents.
+   * Due to oneOf, the key can be in parent fields.
+   * @returns string - the field key.
+   */
+  private _getParentKey(field: FormlyFieldConfig) {
+    if (!field.parent) {
+      return 0;
+    }
+    if (field?.key) {
+      return field.key;
+    }
+    return this._getParentKey(field.parent);
   }
 }

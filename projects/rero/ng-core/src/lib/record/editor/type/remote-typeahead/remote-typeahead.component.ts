@@ -26,10 +26,9 @@ import { RemoteTypeaheadService } from './remote-typeahead.service';
 
 @Component({
   selector: 'ng-core-remote-typeahead',
-  templateUrl: './remote-typeahead.component.html'
+  templateUrl: './remote-typeahead.component.html',
 })
 export class RemoteTypeaheadComponent extends FieldType implements OnInit {
-
   /** Input search string */
   search: string;
 
@@ -37,7 +36,7 @@ export class RemoteTypeaheadComponent extends FieldType implements OnInit {
   typeaheadLoading: boolean;
 
   /** Observable on Suggestions Metadata */
-  suggestions$: Observable<Array<SuggestionMetadata|string>>;
+  suggestions$: Observable<Array<SuggestionMetadata | string>>;
 
   /** Template representation of the formControl value. */
   valueAsHTML$: Observable<string>;
@@ -45,7 +44,7 @@ export class RemoteTypeaheadComponent extends FieldType implements OnInit {
   /** Filters options */
   get filters(): remoteTypeaheadFilters | null {
     return this.field.templateOptions.remoteTypeahead?.filters;
-  };
+  }
 
   /** Number of result in suggestions list */
   private _numberOfSuggestions = 10;
@@ -54,6 +53,7 @@ export class RemoteTypeaheadComponent extends FieldType implements OnInit {
   private get _rtOptions(): object {
     return this.field.templateOptions.remoteTypeahead;
   }
+
 
   /**
    * Constructor
@@ -66,6 +66,7 @@ export class RemoteTypeaheadComponent extends FieldType implements OnInit {
 
   /** Init */
   ngOnInit() {
+    this._checkRtOptions();
     // get the list of suggestions based on input search changes
     this.suggestions$ = new Observable((observer: Observer<string>) => {
       observer.next(this.search);
@@ -135,6 +136,17 @@ export class RemoteTypeaheadComponent extends FieldType implements OnInit {
     this.search = null;
     this.formControl.reset();
     this.field.focus = true;
+  }
+
+  /** Set the filter.selected default value. */
+  private _checkRtOptions(): void {
+    const rtOptions = this._rtOptions as any;
+    if (rtOptions?.filters && rtOptions.filters?.default == null) {
+      throw new Error('Default value is missing for filters.');
+    }
+    if (rtOptions?.filters && rtOptions.filters?.default && rtOptions.filters?.selected == null) {
+      rtOptions.filters.selected = rtOptions.filters.default;
+    }
   }
 }
 

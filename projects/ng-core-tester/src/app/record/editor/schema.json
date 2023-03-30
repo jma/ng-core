@@ -4,6 +4,7 @@
   "title": "Test editor",
   "additionalProperties": false,
   "propertiesOrder": [
+    "oneOfArray",
     "oneOf",
     "optional",
     "required",
@@ -36,10 +37,66 @@
     "remoteTypeaheadWithoutFilters",
     "remoteTypeaheadWithFilters"
   ],
-  "required": [
-    "required"
-  ],
+  "required": ["required"],
   "properties": {
+    "oneOfArray": {
+      "title": "OneOfArray",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+
+        "title": "OneOfArrayElement",
+        "description": "bla",
+        "type": "object",
+        "oneOf": [
+          {
+            "title": "Option",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "option": {
+                "title": "Value",
+                "type": "string",
+                "default": "value1"
+              }
+            }
+          },
+          {
+            "title": "Option 2",
+            "type": "object",
+            "required": ["option2"],
+            "additionalProperties": false,
+            "properties": {
+              "option2": {
+                "title": "Value",
+                "type": "string",
+                "default": "value2"
+              }
+            }
+          }, {
+            "title": "Option 3",
+            "type": "object",
+            "required": ["option3"],
+            "additionalProperties": false,
+            "properties": {
+              "option3": {
+                "title": "Object",
+                "type": "object",
+                "required": ["$ref"],
+                "additionalProperties": false,
+                "properties": {
+                  "$ref": {
+                    "title":"MEF",
+                    "type": "string",
+                    "minLength": 10
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
     "oneOf": {
       "title": "oneOf",
       "type": "object",
@@ -47,14 +104,8 @@
       "oneOf": [
         {
           "title": "Property 1",
-          "propertiesOrder": [
-            "name",
-            "type",
-            "hidden"
-          ],
-          "required": [
-            "name"
-          ],
+          "propertiesOrder": ["name", "type", "hidden"],
+          "required": ["name"],
           "properties": {
             "name": {
               "title": "Name",
@@ -89,9 +140,7 @@
               "readOnly": true,
               "widget": {
                 "formlyConfig": {
-                  "wrappers": [
-                    "hide"
-                  ]
+                  "wrappers": ["hide"]
                 }
               }
             }
@@ -188,9 +237,7 @@
       "minLength": 3,
       "widget": {
         "formlyConfig": {
-          "wrappers": [
-            "hide"
-          ]
+          "wrappers": ["hide"]
         }
       }
     },
@@ -238,11 +285,7 @@
       "type": "string",
       "minLength": 3,
       "default": "val1",
-      "enum": [
-        "val1",
-        "val2",
-        "val3"
-      ],
+      "enum": ["val1", "val2", "val3"],
       "widget": {
         "formlyConfig": {
           "templateOptions": {
@@ -268,13 +311,8 @@
       "title": "Object",
       "type": "object",
       "additionalProperties": false,
-      "propertiesOrder": [
-        "prop1",
-        "prop2"
-      ],
-      "required": [
-        "prop1"
-      ],
+      "propertiesOrder": ["prop1", "prop2"],
+      "required": ["prop1"],
       "properties": {
         "prop1": {
           "title": "Property 1",
@@ -312,22 +350,14 @@
       "title": "Object of object",
       "type": "object",
       "additionalProperties": false,
-      "propertiesOrder": [
-        "object1",
-        "prop3"
-      ],
+      "propertiesOrder": ["object1", "prop3"],
       "properties": {
         "object1": {
           "title": "Object 1",
           "type": "object",
           "additionalProperties": false,
-          "propertiesOrder": [
-            "prop1",
-            "prop2"
-          ],
-          "required": [
-            "prop1"
-          ],
+          "propertiesOrder": ["prop1", "prop2"],
+          "required": ["prop1"],
           "properties": {
             "prop1": {
               "title": "Property 1",
@@ -401,21 +431,13 @@
         "title": "Properties",
         "type": "object",
         "additionalProperties": false,
-        "propertiesOrder": [
-          "prop1",
-          "prop2"
-        ],
-        "required": [
-          "prop1"
-        ],
+        "propertiesOrder": ["prop1", "prop2"],
+        "required": ["prop1"],
         "properties": {
           "prop1": {
             "title": "Property 1",
             "type": "string",
-            "enum": [
-              "value#1",
-              "value#2"
-            ],
+            "enum": ["value#1", "value#2"],
             "minLength": 3,
             "widget": {
               "formlyConfig": {
@@ -467,15 +489,7 @@
     },
     "array_of_array": {
       "title": "Array of array",
-      "default": [
-        [
-          "value 1",
-          "value 2"
-        ],
-        [
-          "value 3"
-        ]
-      ],
+      "default": [["value 1", "value 2"], ["value 3"]],
       "type": "array",
       "minItems": 1,
       "items": {
@@ -506,22 +520,14 @@
         "title": "Object of object",
         "type": "object",
         "additionalProperties": false,
-        "propertiesOrder": [
-          "object1",
-          "prop3"
-        ],
+        "propertiesOrder": ["object1", "prop3"],
         "properties": {
           "object1": {
             "title": "Object1",
             "type": "object",
             "additionalProperties": false,
-            "propertiesOrder": [
-              "prop1",
-              "prop2"
-            ],
-            "required": [
-              "prop1"
-            ],
+            "propertiesOrder": ["prop1", "prop2"],
+            "required": ["prop1"],
             "properties": {
               "prop1": {
                 "title": "Property 1",
@@ -565,20 +571,14 @@
       "type": "string",
       "default": "Value 1",
       "readOnly": true,
-      "enum": [
-        "Value 1",
-        "Value 2"
-      ]
+      "enum": ["Value 1", "Value 2"]
     },
     "hide_with_required_expression_control": {
       "title": "Hidden Property with required expression control",
       "type": "string",
       "minLength": 3,
       "default": "optional",
-      "enum": [
-        "optional",
-        "required"
-      ],
+      "enum": ["optional", "required"],
       "widget": {
         "formlyConfig": {
           "templateOptions": {
@@ -606,9 +606,7 @@
       "description": "Hidden sub-property with hide expression can be added to the form.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "statement"
-      ],
+      "required": ["statement"],
       "properties": {
         "statement": {
           "title": "Statements",
@@ -634,10 +632,7 @@
           }
         }
       },
-      "propertiesOrder": [
-        "statement",
-        "prop"
-      ]
+      "propertiesOrder": ["statement", "prop"]
     },
     "array_of_objects_with_sub_objects": {
       "title": "Array of objects containing sub-objects",
@@ -660,9 +655,7 @@
                 "minLength": 3
               }
             },
-            "required": [
-              "subprop1"
-            ]
+            "required": ["subprop1"]
           },
           "prop2": {
             "title": "Property 2",
@@ -670,20 +663,13 @@
             "minLength": 3
           }
         },
-        "required": [
-          "prop1",
-          "prop2"
-        ]
+        "required": ["prop1", "prop2"]
       }
     },
     "select": {
       "title": "Select with option tree",
       "type": "string",
-      "enum": [
-        "value1",
-        "value2",
-        "value3"
-      ],
+      "enum": ["value1", "value2", "value3"],
       "widget": {
         "formlyConfig": {
           "templateOptions": {
@@ -731,11 +717,7 @@
     "selectGroup": {
       "title": "Select group (compatibility)",
       "type": "string",
-      "enum": [
-        "value1",
-        "value2",
-        "value3"
-      ],
+      "enum": ["value1", "value2", "value3"],
       "widget": {
         "formlyConfig": {
           "templateOptions": {
@@ -764,17 +746,10 @@
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "default": [
-        "value2",
-        "value3"
-      ],
+      "default": ["value2", "value3"],
       "items": {
         "type": "string",
-        "enum": [
-          "value1",
-          "value2",
-          "value3"
-        ]
+        "enum": ["value1", "value2", "value3"]
       },
       "widget": {
         "formlyConfig": {
@@ -860,18 +835,10 @@
       "title": "Array with multiple checkbox",
       "type": "array",
       "minItems": 1,
-      "default": [
-        "checkbox1",
-        "checkbox2"
-      ],
+      "default": ["checkbox1", "checkbox2"],
       "items": {
         "type": "string",
-        "enum": [
-          "checkbox1",
-          "checkbox2",
-          "checkbox3",
-          "checkbox4"
-        ]
+        "enum": ["checkbox1", "checkbox2", "checkbox3", "checkbox4"]
       },
       "widget": {
         "formlyConfig": {
@@ -911,7 +878,6 @@
               "enableGroupField": true,
               "filters": {
                 "default": "value2",
-                "selected": "value2",
                 "options": [
                   {
                     "label": "Value 1",
