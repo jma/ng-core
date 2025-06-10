@@ -17,6 +17,10 @@
 
 @import "./variables";
 
+html, body {
+  scroll-behavior: smooth;
+}
+
 a {
   @apply ui:no-underline;
  }

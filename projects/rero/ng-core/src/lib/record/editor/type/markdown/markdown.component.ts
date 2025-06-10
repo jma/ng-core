@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { AfterViewInit, Component, ElementRef, Type, ViewChild } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, inject, PLATFORM_ID, Type, ViewChild } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyFieldProps } from '@ngx-formly/primeng/form-field';
 import { FormlyFieldTextArea } from '@ngx-formly/primeng/textarea';
-import EasyMDE from 'easymde';
 
 interface TextAreaProps extends FormlyFieldProps {
   maxHeight?: string;
@@ -52,6 +52,9 @@ export interface FormlyTextAreaFieldConfig extends FormlyFieldConfig<TextAreaPro
     standalone: false
 })
 export class MarkdownFieldComponent extends FieldType<FieldTypeConfig<TextAreaProps>> implements AfterViewInit {
+  protected platformId:Object = inject(PLATFORM_ID);
+  protected document: Document = inject(DOCUMENT);
+
   // Reference to textarea element.
   @ViewChild('textarea') textarea: ElementRef;
 
@@ -85,20 +88,24 @@ export class MarkdownFieldComponent extends FieldType<FieldTypeConfig<TextAreaPr
    * Markdown editor initialization and listen for changes to update the model
    * value.
    */
-  ngAfterViewInit(): void {
-    const mde = new EasyMDE({
-      spellChecker: this.props.spellChecker,
-      promptURLs: this.props.promptURLs,
-      initialValue: this.formControl.value,
-      maxHeight: this.props.maxHeight,
-      minHeight: this.props.minHeight,
-      toolbar: this.props.toolbar,
-      element: this.textarea.nativeElement,
-      status: this.props.status,
-    });
+  async ngAfterViewInit() {
+    // needed for SSR
+    if(isPlatformBrowser(this.platformId)) {
+      const EasyMDE = (await import('easymde')).default;
+      const mde = new EasyMDE({
+        spellChecker: this.props.spellChecker,
+        promptURLs: this.props.promptURLs,
+        initialValue: this.formControl.value,
+        maxHeight: this.props.maxHeight,
+        minHeight: this.props.minHeight,
+        toolbar: this.props.toolbar,
+        element: this.textarea.nativeElement,
+        status: this.props.status,
+      });
 
-    mde.codemirror.on('change', () => {
-      this.formControl.patchValue(mde.value());
-    });
+      mde.codemirror.on('change', () => {
+        this.formControl.patchValue(mde.value());
+      });
+    }
   }
 }

@@ -37,9 +37,6 @@ export class RecordSearchResultComponent implements OnInit, AfterViewInit {
   protected changeDetectorRef: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected router: Router = inject(Router);
 
-  // Store current URL to come back to the same page
-  currentUrl: string = null;
-
   // Store if record can be deleted or not
   deleteStatus: ActionStatus;
 
@@ -94,7 +91,6 @@ export class RecordSearchResultComponent implements OnInit, AfterViewInit {
 
   // OnInit hook
   ngOnInit() {
-    this.currentUrl = window.location.href;
     if (this.canDelete$) {
       this.canDelete$.subscribe((result: ActionStatus) => {
         this.deleteStatus = result;

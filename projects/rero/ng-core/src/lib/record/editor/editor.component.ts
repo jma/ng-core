@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Location } from '@angular/common';
+import { Location, ViewportScroller } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -58,6 +58,7 @@ export class EditorComponent extends AbstractCanDeactivateComponent implements O
   protected jsonschemaService: JSONSchemaService = inject(JSONSchemaService);
   protected dialogService: DialogService = inject(DialogService);
   protected messageService: MessageService = inject(MessageService);
+  private scroller: ViewportScroller = inject(ViewportScroller);
 
   // form initial values
   @Input() model: any = null;
@@ -652,20 +653,13 @@ export class EditorComponent extends AbstractCanDeactivateComponent implements O
    * @param scroll: is the screen should scroll to the field.
    */
   setFieldFocus(field: FormlyFieldConfig, scroll: boolean = false): boolean {
-    if (scroll === true && field.id)  {
-      const el = document.getElementById(`field-${field.id}`);
-      if (el != null) {
-        // we need to scroll after the focus setTimeout push the action in the
-        // next event loop.
-        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }));
-        scroll = false;
-      }
-    }
     if (field.fieldGroup && field.fieldGroup.length > 0) {
       const visibleFields = field.fieldGroup.filter(f => !f.hide);
       if (visibleFields.length > 0) {
         return this.setFieldFocus(visibleFields[0], scroll);
       }
+  } else if (scroll === true && field.id)  {
+      this.scroller.scrollToAnchor(`field-${field.id}`);
     }
     field.focus = true;
     return true;
